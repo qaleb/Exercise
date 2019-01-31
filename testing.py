@@ -25,10 +25,13 @@ for i in range(1,11):
 print(total)
 
 # Write a program which finds the factorial of a given number.
-number = int(input("Enter number:"))
-for i in reversed(range(1,number)): # or you can reverse the iteration with reversed() function
-    number *= i
-print(number)'''
+try:
+    number = int(input("Enter number:"))
+    for i in reversed(range(1,number)): # or you can reverse the iteration with reversed() function
+        number *= i
+    print(number)
+except ValueError:
+    print("Input must be a positive integer! Try again.")'''
 
 '''WEEKDAYS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
 # now we iterate over each day in the timetable
@@ -64,7 +67,7 @@ print("You have entered the following details:")
 print("Name: %s %s"%(fname.upper(),lname.upper()))
 print("Age:", age)
 print("Height:",height)
-print("Weight:",weight)'''
+print("Weight:",weight)
 
 #It can be simplified using a loop
 
@@ -77,3 +80,107 @@ print("\nKINDLY CONFIRM YOUR DETAILS BEFORE SUBMIT.\n")
 
 for detail in person.keys():
     print("%s: %s"%(detail.capitalize(),person[detail].capitalize()))
+
+# Try and except error handling
+
+try:
+    dividend = int(input("Please enter the dividend: "))
+    divisor = int(input("Please enter the divisor: "))
+    print("%d / %d = %f" % (dividend, divisor, dividend/divisor))
+except ValueError:
+    print("The divisor and dividend have to be numbers!")
+except ZeroDivisionError:
+    print("The dividend may not be zero!")
+
+# Here we keep asking the user for input until the input is correct
+# with checks
+n = None
+
+while n is None:
+    s = input("Please enter an integer: ")
+    if s.lstrip('-').isdigit():
+        n = int(s)
+    else:
+        print("%s is not an integer." % s)
+
+# with exception handling
+n = None
+
+while n is None:
+    try:
+        s = input("Please enter an integer: ")
+        n = int(s)
+    except ValueError:
+        print("%s is not an integer." % s)
+
+# try & except and else & continue statements
+
+try:
+    name = input("Remind me your name, please:")
+except valueError:
+    print("\nI didn't really understand that, what's your again?")
+else:
+    print("\nAw, it's you %s! Welcome back."%name.capitalize())
+finally:
+    print("It was nice interacting with you.")
+
+class Student:
+    def __init__(self, name, student_number):
+        self.name = name
+        self.student_number = student_number
+        self.classes = []
+    def enrol(self, course_running):
+        self.classes.append(course_running)
+        course_running.add_student(self)
+class Department:
+    def __init__(self, name, department_code):
+        self.name = name
+        self.department_code = department_code
+        self.courses = {}
+    def add_course(self, description, course_code, credits):
+        self.courses[course_code] = Course(description, course_code, credits, self)
+        return self.courses[course_code]
+class Course:
+    def __init__(self, description, course_code, credits, department):
+        self.description = description
+        self.course_code = course_code
+        self.credits = credits
+        self.department = department
+        self.department.add_course(self)
+
+        self.runnings = []
+    def add_running(self, year):
+        self.runnings.append(CourseRunning(self, year))
+        return self.runnings[-1]
+class CourseRunning:
+    def __init__(self, course, year):
+        self.course = course
+        self.year = year
+        self.students = []
+    def add_student(self, student):
+        self.students.append(student)
+        
+maths_dept = Department("Mathematics and Applied Mathematics", "MAM")
+mam1000w = maths_dept.add_course("Mathematics 1000", "MAM1000W", 1)
+mam1000w_2013 = mam1000w.add_running(2013)
+bob = Student("Bob", "Smith")
+bob.enrol(mam1000w_2013)
+
+# Sometimes the exception message contains useful information which we want to display to the user. In order to access
+# the message, we need to be able to access the exception object. We can assign the object to a variable that we can use
+# inside the except clause like this
+
+try:
+    age = int(input("Please enter your age: "))
+except ValueError as err:
+    print("You entered incorrect age input: %s" % err)'''
+
+#We can raise exceptions ourselves using the raise statement:
+try:
+    age = int(input("Please enter your age: "))
+    if age < 0:
+        raise ValueError("%d is not a valid age. Age must be positive or zero."% age)
+except ValueError as err:
+    print("You entered incorrect age input: %s" % err)
+else:
+    print("I see that you are %d years old." % age)
